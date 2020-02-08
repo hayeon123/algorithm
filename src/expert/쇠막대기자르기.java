@@ -8,23 +8,26 @@ public class 쇠막대기자르기 {
 		Scanner sc = new Scanner(System.in); 
 		int T = sc.nextInt(); 
 		for(int tc=1; tc<=T; tc++) {
-			char[] arr = sc.next().toCharArray(); 
-			Stack<Character> stack = new Stack<Character>(); 
-			char tmp = arr[0];
+//			char[] arr = sc.next().toCharArray(); 
+//			Stack<Character> stack = new Stack<Character>(); 
+			String str = sc.next(); 
+			
+			int stack =0;
+			char tmp = str.charAt(0);
 			int cnt = 0; 
-			for (int i = 1; i < arr.length; i++) {
-				if(tmp == '(' && arr[i]==')') {//레이져 
-					cnt += stack.size();
+			for (int i = 1; i < str.length(); i++) {
+				if(tmp == '(' && str.charAt(i)==')') {//레이져 
+					cnt += stack;
 					
-				}else if(tmp =='('&&arr[i]=='(') {
-					stack.push('(');
-				}else if(tmp == ')'&& arr[i]== ')') {
+				}else if(tmp =='('&&str.charAt(i)=='(') {
+					stack++;
+				}else if(tmp == ')'&&str.charAt(i)== ')') {
 					cnt++; 
-					stack.pop();
-				}else if(tmp ==')' && arr[i]== '(') {
+					stack--;
+				}else if(tmp ==')' && str.charAt(i)== '(') {
 					
 				}
-				tmp = arr[i]; 
+				tmp = str.charAt(i); 
 			}
 			System.out.println("#"+tc+" "+cnt);
 		}
