@@ -1,103 +1,101 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+package algorithm;
 
-//3190
-public class 뱀 {
-	static int N; // 보드듸 크기
-	static int K; // 사과의 개수
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class �� {
+	static int N, K, L;
 	static int[][] map;
-	static int L;// 뱀의 방향 변환 횟수
-	static int dr[] = { 0, 1, 0, -1 };// 오른쪽, 아래 , 왼쪽, 위
-	static int dc[] = { 1, 0, -1, 0 };
+	static int[] dr = { 0, 1, 0, -1 };
+	static int[] dc = { 1, 0, -1, 0 }; // �����»�
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		N = sc.nextInt();
-		K = sc.nextInt();
-		map = new int[N + 1][N + 1];
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		K = Integer.parseInt(br.readLine());
+		map = new int[N][N];
 		for (int i = 0; i < K; i++) {
-			int r = sc.nextInt();
-			int c = sc.nextInt();
-			map[r][c] = 9;
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			map[Integer.parseInt(st.nextToken()) - 1][Integer.parseInt(st.nextToken()) - 1] = 1;
 		}
-		L = sc.nextInt();// 뱀의 방향 변환 횟수
-		Order[] order = new Order[L];
-		for (int i = 0; i < L; i++) {
-			order[i] = new Order(sc.nextInt(), sc.next().charAt(0));
-		}
-		ArrayList<Pos> snake = new ArrayList<>();
-		snake.add(new Pos(1, 1, 0));
-		map[1][1] = 1;
-		int idx = 0;
-		int time = 0;
-		int head = 0;
-		int tail = 0;
+		L = Integer.parseInt(br.readLine());
 
-		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int next_time = Integer.parseInt(st.nextToken());
+		char next_dir = st.nextToken().charAt(0);
+		map[0][0] = 2;
+		Queue<Snake> que = new LinkedList<>();
+		que.add(new Snake(0, 0));
+		int r = 0;
+		int c = 0;
+		int time = 0;
+		int dir = 0;
+		int cnt = 0;
 		while (true) {
 			time++;
-			int dir = snake.get(head).dir;
-			int nr = snake.get(head).r + dr[dir];
-			int nc = snake.get(head).c + dc[dir];
-
-			if (!check(nr, nc) || map[nr][nc] == 1)
+//			System.out.println(time);
+			r += dr[dir];
+			c += dc[dir];
+			if (!check(r, c) || map[r][c] == 2) {
 				break;
-			if (map[nr][nc] == 9) {
-				
-			} else {// 0
-				map[snake.get(tail).r][snake.get(tail).c]=0;
-				tail++;
 			}
-			snake.add(new Pos(nr, nc, dir));
-			head++;
-			map[nr][nc] = 1;
-
-			if (idx<order.length && time == order[idx].time) {
-				snake.get(head).dir= getDir(dir,order[idx].dir);
-				idx++;
+			if (map[r][c] == 1) {// ���
+				que.add(new Snake(r, c));
+				map[r][c] = 2;
+			} else {
+				que.add(new Snake(r, c));
+				map[r][c]=2;
+				Snake tail = que.poll();
+				map[tail.r][tail.c] = 0;
 			}
-//			System.out.println("time="+ time+" headDir="+snake.get(head).dir);
-//			for (int i = 0; i <= N; i++) {
-//				for (int j = 0; j <= N; j++) {
-//					System.out.print(map[i][j]);
-//				}System.out.println();
+//			System.out.println(time
+//					);
+//			for (int i = 0; i < N; i++) {
+//				System.out.println(Arrays.toString(map[i]));
 //			}
+			if (time == next_time) {
+				dir = change_dir(dir, next_dir);
+				if (cnt < L-1) {
+					st = new StringTokenizer(br.readLine());
+					next_time = Integer.parseInt(st.nextToken());
+					next_dir = st.nextToken().charAt(0);
+					cnt++;
+				}
+			}
 		}
-
 		System.out.println(time);
 	}
-	static int getDir(int d, int c) {
-		if(c=='D') {
-			d++;
-		}else if(c=='L') {
-			d--;
+
+	static int change_dir(int dir, char d) {
+		if (d == 'L') {
+			dir--;
+			if (dir < 0) {
+				dir = 3;
+			}
+		} else {
+			dir++;
+			if (dir == 4) {
+				dir = 0;
+			}
 		}
-		if(d>3)d=0; 
-		else if(d<0)d=3;
-		
-		return d;
+		return dir;
 	}
+
 	static boolean check(int r, int c) {
-		return r <= N && c <= N && r > 0 && c > 0;
+		return r >= 0 && c >= 0 && r < N && c < N;
 	}
 
-	static class Order {
-		int time;
-		char dir;
+	static class Snake {
+		int r, c;
 
-		Order(int time, char dir) {
-			this.time = time;
-			this.dir = dir;
-		}
-	}
-
-	static class Pos {
-		int r, c, dir;
-
-		Pos(int r, int c, int dir) {
+		Snake(int r, int c) {
 			this.r = r;
 			this.c = c;
-			this.dir = dir;
 		}
 	}
 }
