@@ -1,31 +1,40 @@
 import java.util.Scanner;
 
-public class 리모컨 {
+public class 리모컨  {
 	static boolean button[];
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int N = sc.nextInt();
-		int M = sc.nextInt();
-		button = new boolean[10];
-		for (int i = 0; i < M; i++) {
-			button[sc.nextInt()] = true;
+		Scanner sc = new Scanner(System.in); 
+		int N = sc.nextInt(); 
+		int M = sc.nextInt(); 
+		button = new boolean[12];// 10=+, 11=-
+		for(int i =0; i<M;i++) {
+			button[sc.nextInt()]= true;
 		}
-		int min = Math.abs(N - 100);
-		int down = 1000000;
-		while (down >= 0) {
-			if (isPossible(down)) {
-				min = Math.min(min, (down + "").length() + Math.abs(down - N));
-			}
-			down--;
+		int channel = 100; 
+		if(channel == N ) {
+			System.out.println(0);
+			return ; 
 		}
+		
+		int min = Math.abs(N-100);
+		
+		int up = N; 
+		int down = N;
+		int cnt =(N+"").length(); 
+		while(!isPossible(up)&&!isPossible(down)) {
+			up++; 
+			if(down>0)
+			down--; 
+			cnt++;
+		}
+		min = Math.min(cnt, min);
 		System.out.println(min);
 	}
-
 	static boolean isPossible(int channel) {
-		String st = channel + "";
+		String st = channel+"";
 		char[] num = st.toCharArray();
-		for (char n : num) {
-			if (button[n - 48]) {
+		for(char n : num) {
+			if(button[n-48]) {
 				return false;
 			}
 		}
