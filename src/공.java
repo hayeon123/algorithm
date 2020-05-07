@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class °ø {
+public class ê³µ{
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
 		int N = Integer.parseInt(br.readLine());
@@ -12,7 +12,7 @@ public class °ø {
 		arr[1]=1; 
 		arr[2]=2; 
 		arr[3]=3; 
-		//arr[¹øÈ£]= ÀÚ¸® 
+		//arr[ï¿½ï¿½È£]= ï¿½Ú¸ï¿½ 
 		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int k = Integer.parseInt(st.nextToken());
